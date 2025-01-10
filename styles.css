@@ -1,0 +1,194 @@
+/*
+  Mejoras de aspecto:
+  - Fondo degradado
+  - Tarjeta con color más vibrante
+  - Columnas ajustadas al 100% de la tabla
+  - Botones con estilo MD3
+  - Responsivo
+*/
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Fondo degradado para hacerlo más llamativo */
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #D4FC79 0%, #96E6A1 100%);
+  color: #1C1B1F;
+  margin: 0;
+}
+
+/* Contenedor principal con fondo semitransparente */
+.main-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  min-height: 100vh;
+  border-radius: 16px;
+}
+
+/* Encabezado */
+.header-section {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.header-section h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #2F3E46; 
+}
+
+/* Contenedor de acciones (botones) */
+.actions-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Botón principal (Nuevo Juego, Toggle Tablero) */
+.main-button {
+  border-radius: 20px !important;
+  font-weight: 500;
+}
+
+/* Sección de pregunta */
+.question-section {
+  margin-bottom: 2rem;
+}
+
+/* Card de la pregunta */
+.question-card {
+  border-radius: 12px !important;
+  padding: 1.5rem;
+  background-color: #FFFFFF; /* Elevation level 1 */
+  border: 1px solid #CBD4C2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Texto de la pregunta */
+.question-text {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #2F3E46;
+}
+
+/* Contenedor de respuestas */
+.answers-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Cada respuesta como un botón MD minimal */
+.answer-button {
+  background-color: #DEF7E5;
+  color: #1C1B1F;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 120px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.answer-button:hover {
+  background-color: #BEE3CD; /* Hover */
+}
+
+/* Tablero de campeones */
+.scoreboard-section {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+/* Tabla con 100% de ancho y columnas flexibles */
+.scoreboard-table {
+  margin: 0 auto;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #CBD4C2; 
+  background-color: #FFFFFF;
+  table-layout: fixed;
+}
+
+.scoreboard-table th, .scoreboard-table td {
+  /* Ocupamos todo el ancho uniformemente */
+  width: 25%;
+}
+
+.mdc-data-table__header-cell,
+.mdc-data-table__cell {
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  color: #2F3E46;
+  border-bottom: 1px solid #CBD4C2;
+  padding: 0.75rem;
+}
+
+/* Diálogos y campos de texto */
+.mdc-dialog__surface {
+  border-radius: 12px !important;
+  background-color: #FFFFFF;
+}
+
+.mdc-dialog__title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #2F3E46;
+}
+
+/* Campos de texto con floating label */
+.text-field {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+/* Botones en la ventana modal */
+.mdc-dialog__button {
+  border-radius: 16px !important;
+}
+.mdc-dialog__button.mdc-button--filled {
+  background-color: #2F3E46 !important; /* color principal */
+  color: #FFFFFF !important;
+}
+
+/* Botón "Continuar" en notificaciones */
+#btnModalOk.mdc-button--filled {
+  background-color: #386641 !important; /* un verde */
+  color: #FFFFFF !important;
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+  .main-container {
+    padding: 1rem;
+  }
+  .question-card {
+    padding: 1rem;
+  }
+  .question-text {
+    font-size: 1.1rem;
+  }
+  .actions-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .scoreboard-table th, 
+  .scoreboard-table td {
+    font-size: 0.8rem;
+    width: auto;
+  }
+}
