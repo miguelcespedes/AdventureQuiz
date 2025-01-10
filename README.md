@@ -1,70 +1,61 @@
-Quiero que crees un juego de preguntas tipo “Quiz” con las siguientes características y diseño:
+Quiero que crees un **juego de preguntas** (Quiz) que cumpla con los siguientes **requisitos**:
 
-1. **Tecnologías y Estructura**  
-   - **HTML + CSS + JavaScript** puros.  
-   - **No** usar frameworks de UI (ej. no usar Material).  
-   - Tres archivos: `index.html`, `styles.css`, `scripts.js`.  
-   - Al abrir `index.html` en un navegador moderno, debe funcionar sin servidores adicionales.
+1. **Arquitectura de Archivos**  
+   - **index.html**: Estructura principal, carga de estilos (`styles.css`), un modal para pedir **Nombre** y **Matrícula**, una sección para el **Tablero de Campeones** y otra para la **Pregunta**.  
+   - **styles.css**: Estilo en **modo oscuro**, minimalista, con **variables** para los colores principales (por ejemplo, `--color-bg`, `--color-text`, etc.). Debe usar un fondo oscuro (#121212 o similar) y texto claro. Cards, toasts, modal, responsividad.  
+   - **quizz.js**: Un **array** de **20 preguntas** muy específicas sobre **API Ops**, **API Gateway** y **microservicios**. Cada pregunta con `pregunta`, `opciones`, `correcta`.  
+   - **scripts.js**: La **lógica** del juego (scoreboard en `localStorage`, la sección de preguntas, la función para verificar respuestas, los toasts, etc.).  
 
-2. **Tema Oscuro (Dark)** y Diseño Minimalista  
-   - **Fondo** oscuro (por ejemplo, #121212).  
-   - **Texto** claro (#ffffff).  
-   - **Paleta** con un color principal (ej. #bb86fc) y secundario (#03dac6).  
-   - **Pregunta** centrada en la pantalla.  
-   - **Opciones** como **tarjetas** minimalistas (cards) en vez de botones.  
-   - **Hover**: Al pasar sobre la tarjeta, un ligero **scale** y color de fondo más claro del color principal.  
-   - **Estilo** minimal y responsivo (usar `rem`, `em` o media queries).  
+2. **Flujo del Juego**  
+   - Al abrir “**Nuevo Juego**”, se muestra un **modal** que pide:  
+     - **Nombre**  
+     - **Matrícula**  
+   - Al iniciar el juego, se limpia la pantalla anterior y se muestra la **Primera Pregunta** con las tarjetas (cards) de respuesta.  
+   - Cada **pregunta** se muestra con “**Pregunta X de 20**: {texto}”.  
+   - Si respondes **correcto**, aparece un **toast** (“¡Correcto! Avanzas al nivel {n}”) sin **bloquear** la interacción.  
+   - Si respondes **incorrecto**, aparece otro **toast** (“¡Buen intento! Has fallado. Reiniciando…”) y se guarda el resultado.  
+   - Al **completar** las 20 preguntas, se muestra un **toast** (“¡Felicidades! Has completado el Quiz”).  
 
-3. **Interacción**  
-   - Al **inicio**, hay dos **botones principales** en la pantalla:  
-     1. “Nuevo Juego” (abre un **modal** para capturar **Nombre** y **Matrícula**).  
-     2. “Ocultar/Mostrar Tablero” (para el “Tablero de Campeones”).  
-   - **Restricción**: Solo una partida por **Matrícula**.  
-     - Si la Matrícula ya existe, se muestra un **toast** de error: “Matrícula ya registrada…”.  
+3. **Scoreboard**  
+   - Se registra en `localStorage` un **objeto** por **matrícula** con:  
+     - `nombre`  
+     - `matricula`  
+     - `attempts` (número de veces jugadas)  
+     - `bestScore` (el puntaje más alto logrado)  
+     - `bestTime` (tiempo para ese mejor puntaje)  
+     - `bestLevel` (último nivel alcanzado en ese mejor puntaje o “Completado”)  
+   - La **misma matrícula** puede volver a jugar. Cada vez que juega, `attempts++`. Si el puntaje mejora, se actualiza `bestScore`, `bestTime`, `bestLevel`.  
+   - El **Tablero** se ordena por **bestScore DESC** y, en caso de empate, **bestTime DESC**.  
+   - Debe tener columnas:  
+     - **Jugador**  
+     - **Intentos**  
+     - **Mejor Nivel**  
+     - **Mejor Tiempo (s)**  
+     - **Mejor Puntaje**  
+   - Para los **primeros 3** del tablero, mostrar un **emoji** al final del puntaje (`🏆`, `🥈`, `🥉`).  
 
-4. **Preguntas**  
-   - Mínimo **3 preguntas** de ejemplo.  
-   - Cada pregunta se muestra centrada arriba.  
-   - Debajo, las **opciones** (3-4) se presentan como **cards** en fila.  
-   - Se **mezclan** aleatoriamente (para que la respuesta correcta no esté siempre en la misma posición).
+4. **Modo Oscuro** + **Minimalista**  
+   - `body` con `background-color: #121212` y color de texto `#ffffff`.  
+   - **Cards** de respuesta con un color algo más claro (ej. `#1f1f1f`), borde, y un **hover** que haga un `transform: scale(1.05)`.  
+   - Un **toast** en la esquina superior derecha que desaparezca solo tras ~3s (animado con keyframes).  
+   - El **modal** para Nombre/Matrícula con un fondo semitransparente (un `rgba(0,0,0,0.5)`) que centre el contenido.  
 
-5. **Respuestas**  
-   - Si la respuesta es **Correcta**, se muestra un **toast** (no un modal) con un mensaje: “¡Correcto! Avanzas al nivel {n}”.  
-     - No se detiene el juego, el usuario avanza sin dar clic extra.  
-   - Si la respuesta es **Incorrecta**, **otro toast**: “¡Buen intento! Has fallado. Reiniciando…”.  
-     - Se guarda el puntaje y se reinicia el juego (nivel 0, oculta la sección de preguntas).  
+5. **Responsividad**  
+   - Usa media queries para que en pantallas pequeñas (mobile) las **cards** se muestren en una columna, y la **tabla** reduzca un poco el tamaño de fuente.  
 
-6. **Puntaje y Scoreboard**  
-   - El **puntaje** incrementa según una fórmula basada en **tiempo**, por ejemplo:  
-     ```
-     puntaje += 10 * Math.max(1, 60 - elapsedTime)
-     ```
-     donde `elapsedTime` es el tiempo en segundos desde que comenzó.  
-   - Al **fallar** o **completar** el Quiz, se guarda en el “Tablero de Campeones” con:  
-     - Nombre  
-     - Matrícula  
-     - Nivel (o “Completado”)  
-     - Tiempo (s)  
-     - Puntaje  
-   - Se ordena por **puntaje DESC** y, si hay empate, por **tiempo DESC**.  
-   - Los **primeros 3** lugares llevan **emojis** al final del puntaje (p. ej. “1250 🏆”).  
-   - El **Tablero** se puede **mostrar/ocultar** con el botón.  
-   - Usa `localStorage` para persistir la tabla.  
+6. **Prevención de errores**  
+   - Si `bestTime` es `undefined` (por datos viejos), usar `0.00` de fallback para `.toFixed(2)`.  
+   - No bloquear la matrícula: la misma puede volver a jugar para mejorar su score.  
 
-7. **Modal vs. Toast**  
-   - **Modal**: solo se usa para capturar **Nombre** y **Matrícula** (al iniciar un juego).  
-   - **Toasts**: para feedback rápido (correcto/incorrecto, matrícula repetida, etc.) sin interrumpir el flujo.  
-   - Los **toasts** flotan en la esquina (p. ej. `position: fixed; top: 1rem; right: 1rem;`) y **desaparecen** solos.  
-
-8. **Responsividad**  
-   - Usa **media queries** para que en pantallas pequeñas (móviles), las **cards** de opciones se apilen o expandan en ancho.  
-   - Asegúrate de que los textos sean legibles (no se monten).  
-
-9. **Entrega**  
-   - Quiero el **código completo** de los tres archivos (`index.html`, `styles.css`, `scripts.js`) que cumpla con todo lo anterior.  
-   - Incluye **comentarios** en el JS que describan el flujo principal.  
-   - Debe funcionar únicamente abriendo `index.html` sin necesitar Node, npm, etc.
+7. **Entrega de Código**  
+   - **Cuatro archivos**:  
+     1. `index.html` (estructura)  
+     2. `styles.css` (tema oscuro y minimal)  
+     3. `quizz.js` (array de 20 preguntas, cada una con 4 opciones y un índice de la correcta)  
+     4. `scripts.js` (toda la lógica, scoreboard, toasts, reintentos, “Pregunta X de Y”).  
+   - Que todo **funcione** al abrir `index.html` sin necesidad de servidores.  
+   - Incluye **comentarios** en el JS para que se entienda la lógica principal (cargar scoreboard, mostrar pregunta, verificar respuesta, etc.).  
 
 **Resumen**:  
-Deseo un **juego de preguntas** (Quiz) con estilo **oscuro** y **minimalista**, donde la **pregunta** aparezca **centrada** y las **opciones** sean **tarjetas** en fila. El **usuario** recibe **toasts** (no modales) como retroalimentación inmediata al responder, **sin** bloquear el juego. Se restringe a **una partida** por **matrícula**, se guarda el **puntaje** y el **tiempo** en un **Tablero de Campeones** en `localStorage`, ordenado por **puntaje** y **tiempo** (desc), con emojis para el top 3. Genera el **código completo** en tres archivos.
+Necesito un proyecto con **modo oscuro**, **tarjetas minimalistas** para respuestas, **toasts** en vez de modales para feedback, **reintentos** en la misma matrícula, un **scoreboard** con `bestScore`, `bestTime`, `attempts`, ordenado por **score/time**, y **20 preguntas** sobre **API Ops** y **API Gateway** (guardadas en `quizz.js`). Genera los **cuatro** archivos completos.
 

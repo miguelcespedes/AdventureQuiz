@@ -1,7 +1,8 @@
 /*
   Tema oscuro + Minimal Cards para las opciones
-  - Usamos toasts para feedback
+  - Se usan toasts para feedback
   - Pregunta centrada
+  - Ajustes para manejar reintentos y columnas extra en scoreboard
 */
 
 /* Variables de color */
@@ -107,22 +108,24 @@ body {
   flex-wrap: wrap;
   gap: 1rem;
 }
+
 /* Cada opción es una 'card' minimalista */
 .answer-card {
   background-color: #2d2d2d;
   border: 2px solid var(--color-border);
   border-radius: 8px;
+  /* Aumentamos padding para textos largos */
+  padding: 1.2rem; 
   width: 200px;
-  height: 100px;
+  min-height: 100px; /* Ajuste para contenido variado */
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
   color: var(--color-text);
   font-size: 1rem;
   font-weight: 500;
-  padding: 0.5rem;
   text-align: center;
 }
 .answer-card:hover {
@@ -147,10 +150,11 @@ body {
 }
 .scoreboard-table th,
 .scoreboard-table td {
-  padding: 0.75rem;
+  padding: 1rem; /* Un poco más de espacio en celdas */
   border: 1px solid var(--color-border);
   text-align: center;
   font-size: 1rem;
+  vertical-align: middle;
 }
 .scoreboard-table th {
   background-color: #2a2a2a;
@@ -168,6 +172,7 @@ body {
   background-color: rgba(0,0,0,0.5);
   align-items: center;
   justify-content: center;
+  z-index: 999; /* Aseguramos que aparezca sobre contenido principal */
 }
 .modal.active {
   display: flex;
@@ -258,13 +263,16 @@ body {
   .question-text {
     font-size: 1.2rem;
   }
+  /* Las cards se adaptan al ancho completo en móviles */
   .answer-card {
     width: 100%;
     max-width: 300px;
-    height: auto;
+    min-height: auto;
     padding: 1rem;
   }
-  .scoreboard-table th, .scoreboard-table td {
+  .scoreboard-table th, 
+  .scoreboard-table td {
     font-size: 0.85rem;
+    padding: 0.75rem;
   }
 }
