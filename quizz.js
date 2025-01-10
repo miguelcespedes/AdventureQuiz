@@ -1,6 +1,5 @@
 // quizz.js
 // Array de 20 preguntas sobre API Ops, API Gateway, microservicios, etc.
-// Cada pregunta tiene 'pregunta', 'opciones', 'correcta' (índice de la opción correcta)
 
 const questions = [
   {

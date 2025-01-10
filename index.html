@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz Aventura - Dark Mode</title>
+  <title>Quiz Aventura</title>
 
-  <!-- Viewport meta para mejorar la experiencia responsive 
-       y limitar (o desactivar) el zoom en móviles -->
+  <!-- Viewport meta para mejorar la experiencia responsive
+       y (opcionalmente) desactivar el zoom en dispositivos móviles -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
   <!-- Nuestros estilos en modo oscuro (styles.css) -->
@@ -16,7 +16,7 @@
   <div class="main-container">
     <!-- Encabezado -->
     <header class="header-section">
-      <h1>Quiz Aventura (Dark Minimal)</h1>
+      <h1>Quiz Aventura</h1>
     </header>
 
     <!-- Acciones principales -->
@@ -43,13 +43,14 @@
           <tr>
             <th>Jugador</th>
             <th>Intentos</th>
-            <th>Mejor Nivel</th>
-            <th>Mejor Tiempo (s)</th>
+            <!-- Estas columnas se ocultarán en móvil -->
+            <th class="mobile-hide">Mejor Nivel</th>
+            <th class="mobile-hide">Mejor Tiempo (s)</th>
             <th>Mejor Puntaje</th>
           </tr>
         </thead>
         <tbody id="scoreboardBody">
-          <!-- Se llena dinámicamente desde scripts.js -->
+          <!-- Se llena dinámicamente en scripts.js -->
         </tbody>
       </table>
     </section>

@@ -2,7 +2,8 @@
   Tema oscuro + Minimal Cards para las opciones
   - Se usan toasts para feedback
   - Pregunta centrada
-  - Ajustes para mayor responsividad en pantallas pequeñas
+  - Ajustes para manejar reintentos y columnas extra en scoreboard
+  - Ahora ocultamos "Mejor Nivel" y "Mejor Tiempo" en móvil
 */
 
 /* Variables de color */
@@ -17,24 +18,19 @@
   --color-shadow: rgba(0, 0, 0, 0.5);
 
   /* Ajustes escalables para fuentes */
-  --font-size-base: 16px; /* Base para pantallas grandes */
+  --font-size-base: 16px; 
   --font-size-heading: 2rem;
   --font-size-subheading: 1.5rem;
   --font-size-normal: 1rem;
 }
 
-/* 
- * Reset
- */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* 
- * Body (fondo oscuro)
- */
 body {
   font-family: "Roboto", sans-serif;
   background-color: var(--color-bg);
@@ -44,9 +40,7 @@ body {
   font-size: var(--font-size-base);
 }
 
-/*
- * Contenedor principal
- */
+/* Contenedor principal */
 .main-container {
   max-width: 960px;
   margin: 0 auto;
@@ -54,9 +48,7 @@ body {
   min-height: 100vh;
 }
 
-/*
- * Header
- */
+/* Header */
 .header-section {
   text-align: center;
   margin-bottom: 2rem;
@@ -67,9 +59,7 @@ body {
   color: var(--color-primary);
 }
 
-/*
- * Acciones (botones)
- */
+/* Acciones (botones) */
 .actions-container {
   display: flex;
   justify-content: center;
@@ -77,9 +67,7 @@ body {
   margin-bottom: 2rem;
 }
 
-/*
- * Botones base
- */
+/* Botones base */
 .button {
   font-size: var(--font-size-normal);
   padding: 0.7rem 1.2rem;
@@ -103,9 +91,7 @@ body {
   border: 1px solid var(--color-primary);
 }
 
-/*
- * Sección de pregunta
- */
+/* Sección de pregunta */
 .question-section.hidden {
   display: none;
 }
@@ -123,9 +109,7 @@ body {
   font-weight: 500;
 }
 
-/* 
- * Respuestas en fila de tarjetas 
- */
+/* Respuestas en fila de tarjetas */
 .answers-row {
   display: flex;
   justify-content: center;
@@ -133,9 +117,7 @@ body {
   gap: 1rem;
 }
 
-/* 
- * Cada opción es una 'card' minimalista
- */
+/* Cada opción es una 'card' minimalista */
 .answer-card {
   background-color: #2d2d2d;
   border: 2px solid var(--color-border);
@@ -158,9 +140,7 @@ body {
   background-color: var(--color-primary-dark);
 }
 
-/*
- * Scoreboard
- */
+/* Scoreboard */
 .scoreboard-section {
   margin-top: 2rem;
   text-align: center;
@@ -188,9 +168,13 @@ body {
   color: var(--color-secondary);
 }
 
-/*
- * Modal para datos (Nombre/Matrícula)
+/* 
+ * Oculte las columnas con la clase .mobile-hide 
+ * en pantallas <= 600px
  */
+.mobile-hide {}
+
+/* Modal para datos */
 .modal {
   display: none; /* Oculto por defecto */
   position: fixed;
@@ -240,9 +224,7 @@ body {
   gap: 1rem;
 }
 
-/*
- * Toast Container
- */
+/* Toast Container */
 .toast-container {
   position: fixed;
   top: 1rem;
@@ -286,14 +268,10 @@ body {
   }
 }
 
-/*
- * Responsividad 
- * Aumentamos fuente en mobile y reorganizamos elementos
- */
+/* Responsivo */
 @media (max-width: 600px) {
-  /* Aumentamos la base de fuente un poco, para verse más grande en móvil */
   :root {
-    --font-size-base: 18px; /* Subimos la base */
+    --font-size-base: 18px; 
   }
 
   .main-container {
@@ -313,12 +291,17 @@ body {
     max-width: 320px;
     min-height: auto;
     padding: 1rem;
-    font-size: 1.1rem; /* Más grande en mobile */
+    font-size: 1.1rem;
   }
 
   .scoreboard-table th, 
   .scoreboard-table td {
     font-size: 0.9rem; 
     padding: 0.75rem;
+  }
+
+  /* Ocultar .mobile-hide en pantallas móviles */
+  .mobile-hide {
+    display: none;
   }
 }

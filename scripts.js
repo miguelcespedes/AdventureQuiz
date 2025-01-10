@@ -4,7 +4,8 @@
  * 1) La misma matrícula puede jugar varias veces (attempts++).
  * 2) Se guarda en scoreboard: { nombre, matricula, attempts, bestLevel, bestTime, bestScore }
  * 3) "Pregunta X de Y" al mostrar cada nivel.
- * 4) Se hace fallback a 0 si bestTime no existe (para evitar el error de "toFixed").
+ * 4) Se hace fallback a 0 si bestTime no existe (para evitar error de "toFixed").
+ * 5) Se ocultan "Mejor Nivel" y "Mejor Tiempo (s)" en móvil usando la clase .mobile-hide
  ****************************************************************************/
 
 /*****************************************************************************
@@ -95,12 +96,11 @@ function iniciarJuego() {
  * "Pregunta X de Y: <texto>"
  *****************************************************************************/
 function mostrarPregunta(nivel) {
-  // "questions" debe venir de quizz.js
+  // "questions" viene de quizz.js
   const questionObj = questions[nivel - 1];
   const questionText = document.getElementById("questionText");
   const answersContainer = document.getElementById("answersContainer");
 
-  // Título: "Pregunta 3 de 20: ..."
   questionText.textContent = `Pregunta ${nivel} de ${questions.length}: ${questionObj.pregunta}`;
   answersContainer.innerHTML = "";
 
@@ -130,7 +130,7 @@ function verificarRespuesta(esCorrecta) {
   const tiempoTranscurrido = (Date.now() - startTime) / 1000;
 
   if (esCorrecta) {
-    // Ejemplo de puntaje
+    // Fórmula de puntaje
     score += 10 * Math.max(1, 60 - tiempoTranscurrido);
 
     currentLevel++;
@@ -144,7 +144,7 @@ function verificarRespuesta(esCorrecta) {
       reiniciarJuego();
     }
   } else {
-    // Fallo
+    // Falló
     showToast("¡Buen intento! Has fallado. Reiniciando...", "error");
     guardarResultado(currentLevel, tiempoTranscurrido, Math.round(score));
     reiniciarJuego();
@@ -201,6 +201,7 @@ function reiniciarJuego() {
 /*****************************************************************************
  * ACTUALIZAR TABLA DEL SCOREBOARD
  * - Fallback a 0 si bestTime es undefined (para evitar error .toFixed())
+ * - Se ocultan "Mejor Nivel" y "Mejor Tiempo" en móvil usando la clase .mobile-hide
  *****************************************************************************/
 function actualizarTablaScoreboard() {
   const tbody = document.getElementById("scoreboardBody");
@@ -225,12 +226,14 @@ function actualizarTablaScoreboard() {
     const tdIntentos = document.createElement("td");
     tdIntentos.textContent = entry.attempts;
 
-    // Mejor Nivel
+    // Mejor Nivel (ocultar en móvil)
     const tdNivel = document.createElement("td");
+    tdNivel.classList.add("mobile-hide");
     tdNivel.textContent = entry.bestLevel;
 
-    // Mejor Tiempo (fallback si undefined)
+    // Mejor Tiempo (ocultar en móvil)
     const tdTiempo = document.createElement("td");
+    tdTiempo.classList.add("mobile-hide");
     const safeTime = (typeof entry.bestTime === "number") ? entry.bestTime : 0;
     tdTiempo.textContent = safeTime.toFixed(2);
 
@@ -253,7 +256,7 @@ function actualizarTablaScoreboard() {
 }
 
 /*****************************************************************************
- * MOSTRAR TOAST (NOTIFICACIÓN FLOTANTE)
+ * MOSTRAR TOAST (notificación flotante)
  *****************************************************************************/
 function showToast(msg, type = "success") {
   const container = document.getElementById("toastContainer");
