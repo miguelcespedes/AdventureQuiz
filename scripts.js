@@ -1,163 +1,106 @@
-// ----------------------------------------------------------------------------------
-// LÓGICA DE JUEGO
-// - Tablero ordenado por puntaje DESC y luego tiempo DESC
-// - Restricción: una sola partida por matrícula (mensaje empático si ya jugó)
-// - Botón para ocultar/mostrar el tablero
-// ----------------------------------------------------------------------------------
+/****************************************************************************
+ * scripts.js - Juego de preguntas con:
+ * - Tarjetas minimalistas (cards) para las opciones
+ * - Pregunta centrada
+ * - Toast notifications (no modales al avanzar/fallar)
+ * - Restricción de 1 partida por matrícula
+ ****************************************************************************/
 
+// Variables globales
 let nombreJugador = "";
 let matriculaJugador = "";
 let currentLevel = 0;
 let score = 0;
-let startTime = 0;
-let questions = [];
+let startTime = 0; 
 let scoreboard = [];
+let questions = [];
 
+/*****************************************************************************
+ * Al cargar la página
+ *****************************************************************************/
 document.addEventListener("DOMContentLoaded", () => {
-  inicializarMDC();
-  cargarScoreboardDeLocalStorage();
-  definirPreguntasDeEjemplo();
+  // Cargar scoreboard
+  cargarScoreboard();
 
-  const btnNuevoJuego = document.getElementById("btnNuevoJuego");
-  btnNuevoJuego.addEventListener("click", abrirModalDatosJugador);
+  // Definir preguntas
+  definirPreguntas();
 
-  const btnIniciarJuego = document.getElementById("btnIniciarJuego");
-  btnIniciarJuego.addEventListener("click", iniciarJuego);
+  // Botones principales
+  document.getElementById("btnNuevoJuego")
+    .addEventListener("click", () => abrirModal("modalDatosJugador"));
 
-  const btnModalOk = document.getElementById("btnModalOk");
-  btnModalOk.addEventListener("click", cerrarModalNotificacion);
+  document.getElementById("btnCancelarDatos")
+    .addEventListener("click", () => cerrarModal("modalDatosJugador"));
 
-  // Botón para ocultar/mostrar Tablero
-  const btnToggleScoreboard = document.getElementById("btnToggleScoreboard");
-  btnToggleScoreboard.addEventListener("click", toggleScoreboard);
+  document.getElementById("btnIniciarJuego")
+    .addEventListener("click", iniciarJuego);
+
+  document.getElementById("btnToggleScoreboard")
+    .addEventListener("click", toggleScoreboard);
 });
 
-// --------------------
-// Inicializa los componentes de Material
-// --------------------
-function inicializarMDC() {
-  mdc.autoInit();
-}
-
-// --------------------
-// Carga el scoreboard del localStorage
-// --------------------
-function cargarScoreboardDeLocalStorage() {
+/*****************************************************************************
+ * Cargar / Guardar scoreboard
+ *****************************************************************************/
+function cargarScoreboard() {
   const data = localStorage.getItem("scoreboard");
   if (data) {
     scoreboard = JSON.parse(data);
   } else {
     scoreboard = [];
   }
-  actualizarTablaScoreboard();
+  actualizarTabla();
 }
 
-// --------------------
-// Guarda el scoreboard en localStorage
-// --------------------
-function guardarScoreboardEnLocalStorage() {
+function guardarScoreboard() {
   localStorage.setItem("scoreboard", JSON.stringify(scoreboard));
 }
 
-// --------------------
-// Actualiza la tabla (orden por puntaje desc, luego tiempo desc)
-// --------------------
-function actualizarTablaScoreboard() {
-  const tbody = document.getElementById("scoreboardBody");
-  tbody.innerHTML = "";
-
-  // Ordenar primero por puntaje desc, luego por tiempo desc
-  scoreboard.sort((a, b) => {
-    if (b.puntaje === a.puntaje) {
-      // Ordenar por tiempo descendente
-      return b.tiempo - a.tiempo;
-    }
-    // Ordenar por puntaje descendente
-    return b.puntaje - a.puntaje;
-  });
-
-  // Rellenar la tabla
-  scoreboard.forEach((entry, index) => {
-    const tr = document.createElement("tr");
-    tr.classList.add("mdc-data-table__row");
-
-    // Jugador
-    const tdJugador = document.createElement("td");
-    tdJugador.classList.add("mdc-data-table__cell");
-    tdJugador.textContent = entry.nombre;
-
-    // Nivel
-    const tdNivel = document.createElement("td");
-    tdNivel.classList.add("mdc-data-table__cell");
-    tdNivel.textContent = entry.nivel;
-
-    // Tiempo
-    const tdTiempo = document.createElement("td");
-    tdTiempo.classList.add("mdc-data-table__cell");
-    tdTiempo.textContent = entry.tiempo.toFixed(2);
-
-    // Puntaje
-    const tdPuntaje = document.createElement("td");
-    tdPuntaje.classList.add("mdc-data-table__cell");
-    tdPuntaje.textContent = entry.puntaje;
-
-    tr.appendChild(tdJugador);
-    tr.appendChild(tdNivel);
-    tr.appendChild(tdTiempo);
-    tr.appendChild(tdPuntaje);
-
-    tbody.appendChild(tr);
-  });
-}
-
-// --------------------
-// Definir preguntas de ejemplo
-// --------------------
-function definirPreguntasDeEjemplo() {
+/*****************************************************************************
+ * Definir preguntas de ejemplo
+ *****************************************************************************/
+function definirPreguntas() {
   questions = [
     {
       pregunta: "¿Cuál es la capital de Francia?",
       opciones: ["Roma", "París", "Londres", "Berlín"],
-      respuestaCorrecta: 1
+      correcta: 1
     },
     {
       pregunta: "¿Cuánto es 2 + 2?",
       opciones: ["3", "4", "5", "22"],
-      respuestaCorrecta: 1
+      correcta: 1
     },
     {
       pregunta: "¿Qué idioma se habla principalmente en Brasil?",
       opciones: ["Español", "Portugués", "Inglés", "Francés"],
-      respuestaCorrecta: 1
+      correcta: 1
     }
   ];
 }
 
-// --------------------
-// Abre modal para pedir datos del jugador
-// --------------------
-function abrirModalDatosJugador() {
-  const dialog = new mdc.dialog.MDCDialog(document.getElementById("modalDatosJugador"));
-  dialog.open();
+/*****************************************************************************
+ * Modal de captura de datos (abrir / cerrar)
+ *****************************************************************************/
+function abrirModal(idModal) {
+  document.getElementById(idModal).classList.add("active");
+}
+function cerrarModal(idModal) {
+  document.getElementById(idModal).classList.remove("active");
 }
 
-// --------------------
-// Inicia el juego (verificar si la matrícula ya jugó)
-// --------------------
+/*****************************************************************************
+ * Iniciar juego (verificar si la matrícula ya existe)
+ *****************************************************************************/
 function iniciarJuego() {
   const nombreInput = document.getElementById("nombreInput");
   const matriculaInput = document.getElementById("matriculaInput");
 
   if (!nombreInput.value.trim() || !matriculaInput.value.trim()) {
-    return; // campos vacíos
+    return;
   }
-
-  // Verificar si la matrícula ya jugó
-  if (yaJugoEstaMatricula(matriculaInput.value.trim())) {
-    abrirModalNotificacion(
-      "¡Ups! Ya jugaste",
-      "Veo que ya has participado con esa matrícula. ¡Muchas gracias por tu entusiasmo, pero solo puedes jugar una vez!"
-    );
+  if (matriculaExiste(matriculaInput.value.trim())) {
+    showToast("Matrícula ya registrada, no puedes jugar otra vez", "error");
     return;
   }
 
@@ -168,21 +111,23 @@ function iniciarJuego() {
   score = 0;
   startTime = Date.now();
 
-  document.getElementById("questionSection").style.display = "block";
+  // Cerrar modal y mostrar la sección de preguntas
+  cerrarModal("modalDatosJugador");
+  document.getElementById("questionSection").classList.remove("hidden");
 
   mostrarPregunta(currentLevel);
 }
 
-// --------------------
-// Checa si la matrícula ya existe en scoreboard
-// --------------------
-function yaJugoEstaMatricula(matricula) {
-  return scoreboard.some((entry) => entry.matricula === matricula);
+/*****************************************************************************
+ * Verificar si la matrícula ya jugó
+ *****************************************************************************/
+function matriculaExiste(mat) {
+  return scoreboard.some((entry) => entry.matricula === mat);
 }
 
-// --------------------
-// Muestra la pregunta actual
-// --------------------
+/*****************************************************************************
+ * Mostrar la pregunta y opciones como "cards"
+ *****************************************************************************/
 function mostrarPregunta(nivel) {
   const questionObj = questions[nivel - 1];
   const questionText = document.getElementById("questionText");
@@ -191,77 +136,66 @@ function mostrarPregunta(nivel) {
   questionText.textContent = questionObj.pregunta;
   answersContainer.innerHTML = "";
 
-  // Mezclamos las opciones
-  const opcionesConIndices = questionObj.opciones.map((op, idx) => ({ texto: op, indice: idx }));
-  mezclarArray(opcionesConIndices);
+  // Mezclar opciones
+  const ops = questionObj.opciones.map((texto, idx) => ({ texto, idx }));
+  mezclar(ops);
 
-  // Creamos un botón por cada opción
-  opcionesConIndices.forEach((op) => {
-    const btn = document.createElement("button");
-    btn.className = "answer-button mdc-button";
-    btn.textContent = op.texto;
+  // Crear "cards"
+  ops.forEach((op) => {
+    const card = document.createElement("div");
+    card.classList.add("answer-card");
+    card.textContent = op.texto;
 
-    btn.addEventListener("click", () => {
-      verificarRespuesta(op.indice === questionObj.respuestaCorrecta);
+    card.addEventListener("click", () => {
+      verificarRespuesta(op.idx === questionObj.correcta);
     });
 
-    answersContainer.appendChild(btn);
+    answersContainer.appendChild(card);
   });
 }
 
-// --------------------
-// Verifica si la respuesta es correcta
-// --------------------
-function verificarRespuesta(esCorrecta) {
-  if (esCorrecta) {
-    // Puntaje en función del tiempo
-    const elapsedTime = (Date.now() - startTime) / 1000;
-    score += 10 * Math.max(1, 60 - elapsedTime);
+/*****************************************************************************
+ * Verificar respuesta y mostrar toasts
+ *****************************************************************************/
+function verificarRespuesta(correcta) {
+  const tiempoTranscurrido = (Date.now() - startTime) / 1000;
 
+  if (correcta) {
+    score += 10 * Math.max(1, 60 - tiempoTranscurrido);
     currentLevel++;
     if (currentLevel <= questions.length) {
-      abrirModalNotificacion(
-        `¡Nivel ${currentLevel}!`,
-        "¡Respuesta correcta! Avanzando a la siguiente pregunta..."
-      );
+      showToast(`¡Correcto! Avanzas al nivel ${currentLevel}`, "success");
       mostrarPregunta(currentLevel);
     } else {
-      // Completó el juego
-      const totalTime = (Date.now() - startTime) / 1000;
-      abrirModalNotificacion(
-        "¡Felicidades!",
-        `Has completado todos los niveles. Tu puntaje final es: ${Math.round(score)}`
-      );
-      guardarResultadoEnScoreboard("Completado", totalTime, Math.round(score));
+      showToast("¡Felicidades! Has completado el Quiz", "success");
+      guardarResultado("Completado", tiempoTranscurrido, Math.round(score));
       reiniciarJuego();
     }
   } else {
-    // Respuesta incorrecta
-    const totalTime = (Date.now() - startTime) / 1000;
-    abrirModalNotificacion("¡Buen intento!", "Has fallado. El juego se reiniciará.");
-    guardarResultadoEnScoreboard(currentLevel, totalTime, Math.round(score));
+    showToast("¡Buen intento! Has fallado. Reiniciando...", "error");
+    guardarResultado(currentLevel, tiempoTranscurrido, Math.round(score));
     reiniciarJuego();
   }
 }
 
-// --------------------
-// Guarda el resultado en scoreboard
-// --------------------
-function guardarResultadoEnScoreboard(nivel, tiempo, puntaje) {
+/*****************************************************************************
+ * Guardar resultado en scoreboard
+ *****************************************************************************/
+function guardarResultado(nivel, tiempo, puntaje) {
   scoreboard.push({
     nombre: nombreJugador,
     matricula: matriculaJugador,
-    nivel: nivel,
-    tiempo: tiempo,
-    puntaje: puntaje
+    nivel,
+    tiempo,
+    puntaje
   });
-  guardarScoreboardEnLocalStorage();
-  actualizarTablaScoreboard();
+  guardarScoreboard();
+  actualizarTabla();
 }
 
-// --------------------
-// Reinicia el juego
-// --------------------
+/*****************************************************************************
+ * Reiniciar el juego
+ *****************************************************************************/
 function reiniciarJuego() {
   currentLevel = 0;
   score = 0;
@@ -269,53 +203,98 @@ function reiniciarJuego() {
   nombreJugador = "";
   matriculaJugador = "";
 
-  document.getElementById("questionSection").style.display = "none";
+  // Ocultar la sección de pregunta
+  document.getElementById("questionSection").classList.add("hidden");
 }
 
-// --------------------
-// Abre el modal de notificación
-// --------------------
-function abrirModalNotificacion(titulo, contenido) {
-  const modalTitle = document.getElementById("modalNotificacion-title");
-  const modalContent = document.getElementById("modalNotificacion-content");
-  modalTitle.textContent = titulo;
-  modalContent.textContent = contenido;
+/*****************************************************************************
+ * Actualizar tabla (orden: puntaje desc, luego tiempo desc)
+ * Con emojis en top 3
+ *****************************************************************************/
+function actualizarTabla() {
+  const tbody = document.getElementById("scoreboardBody");
+  tbody.innerHTML = "";
 
-  const dialog = new mdc.dialog.MDCDialog(document.getElementById("modalNotificacion"));
-  dialog.open();
+  scoreboard.sort((a, b) => {
+    if (b.puntaje === a.puntaje) {
+      return b.tiempo - a.tiempo;
+    }
+    return b.puntaje - a.puntaje;
+  });
+
+  scoreboard.forEach((entry, index) => {
+    const tr = document.createElement("tr");
+
+    const tdJugador = document.createElement("td");
+    tdJugador.textContent = entry.nombre;
+
+    const tdNivel = document.createElement("td");
+    tdNivel.textContent = entry.nivel;
+
+    const tdTiempo = document.createElement("td");
+    tdTiempo.textContent = entry.tiempo.toFixed(2);
+
+    const tdPuntaje = document.createElement("td");
+    let emoji = "";
+    if (index === 0) emoji = " 🏆";
+    else if (index === 1) emoji = " 🥈";
+    else if (index === 2) emoji = " 🥉";
+    tdPuntaje.textContent = entry.puntaje + emoji;
+
+    tr.appendChild(tdJugador);
+    tr.appendChild(tdNivel);
+    tr.appendChild(tdTiempo);
+    tr.appendChild(tdPuntaje);
+    tbody.appendChild(tr);
+  });
 }
 
-// --------------------
-// Cierra el modal de notificación
-// --------------------
-function cerrarModalNotificacion() {
-  const dialog = new mdc.dialog.MDCDialog(document.getElementById("modalNotificacion"));
-  dialog.close();
+/*****************************************************************************
+ * Toast notifications
+ *****************************************************************************/
+function showToast(msg, type = "success") {
+  const container = document.getElementById("toastContainer");
+  const toast = document.createElement("div");
+  toast.classList.add("toast");
+  if (type === "error") {
+    toast.classList.add("error");
+  } else {
+    toast.classList.add("success");
+  }
+  toast.textContent = msg;
+
+  container.appendChild(toast);
+
+  // Desaparece solo tras 3s (lo definimos en la animación)
+  setTimeout(() => {
+    if (toast.parentNode) {
+      container.removeChild(toast);
+    }
+  }, 3100);
 }
 
-// --------------------
-// Mezclar array (Fisher-Yates)
-// --------------------
-function mezclarArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
+/*****************************************************************************
+ * Mezclar array (Fisher-Yates)
+ *****************************************************************************/
+function mezclar(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 }
 
-// --------------------
-// Ocultar/Mostrar el scoreboard
-// --------------------
+/*****************************************************************************
+ * Ocultar/Mostrar Tablero
+ *****************************************************************************/
 function toggleScoreboard() {
-  const scoreboardSection = document.getElementById("scoreboardSection");
-  const btnToggle = document.getElementById("btnToggleScoreboard");
+  const section = document.getElementById("scoreboardSection");
+  const btn = document.getElementById("btnToggleScoreboard");
 
-  // Toggle visibilidad
-  if (scoreboardSection.style.display === "none") {
-    scoreboardSection.style.display = "block";
-    btnToggle.textContent = "Ocultar Tablero";
+  if (section.style.display === "none") {
+    section.style.display = "block";
+    btn.textContent = "Ocultar Tablero";
   } else {
-    scoreboardSection.style.display = "none";
-    btnToggle.textContent = "Mostrar Tablero";
+    section.style.display = "none";
+    btn.textContent = "Mostrar Tablero";
   }
 }

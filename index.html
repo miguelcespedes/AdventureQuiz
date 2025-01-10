@@ -2,183 +2,82 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Quiz Aventura - Edición Mejorada</title>
+  <title>Quiz Aventura - Dark / Minimal Cards</title>
 
-  <!-- Fuente Roboto (estándar en MD) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link 
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Material Components Web (versión aproximada a MD3) -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/material-components-web@latest/dist/material-components-web.min.css"
-  />
-
-  <!-- Nuestro archivo de estilos personalizados -->
+  <!-- Nuestros estilos (tema oscuro con tarjetas minimalistas) -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
-  <!-- Contenedor principal -->
-  <div class="main-container mdc-typography">
+  <div class="main-container">
     <!-- Encabezado -->
     <header class="header-section">
-      <h1>Quiz Aventura</h1>
+      <h1>Quiz Aventura (Dark Minimal)</h1>
     </header>
 
-    <!-- Botones de Nuevo Juego y Toggle Tablero -->
+    <!-- Botones principales -->
     <div class="actions-container">
-      <button
-        class="mdc-button mdc-button--filled main-button"
-        id="btnNuevoJuego"
-      >
-        <span class="mdc-button__label">Nuevo Juego</span>
+      <button class="button button-filled" id="btnNuevoJuego">
+        Nuevo Juego
       </button>
-
-      <button
-        class="mdc-button mdc-button--outlined main-button"
-        id="btnToggleScoreboard"
-      >
-        <span class="mdc-button__label">Ocultar Tablero</span>
+      <button class="button button-outlined" id="btnToggleScoreboard">
+        Ocultar Tablero
       </button>
     </div>
 
-    <!-- Sección para la tarjeta de pregunta -->
-    <section id="questionSection" class="question-section" style="display: none;">
-      <div class="mdc-card question-card">
-        <div class="mdc-card__primary-action">
-          <h2 class="question-text" id="questionText">Pregunta...</h2>
-          <div class="answers-container" id="answersContainer">
-            <!-- Respuestas dinámicas -->
-          </div>
+    <!-- Sección de la Pregunta (invisible al inicio) -->
+    <section id="questionSection" class="question-section hidden">
+      <div class="question-card">
+        <h2 class="question-text" id="questionText">Aquí va la pregunta...</h2>
+        <div class="answers-row" id="answersContainer">
+          <!-- Tarjetas de respuesta se generan con JS -->
         </div>
       </div>
     </section>
 
-    <!-- Sección del tablero de campeones (para mostrar/ocultar) -->
+    <!-- Tablero de Campeones -->
     <section class="scoreboard-section" id="scoreboardSection">
       <h2>Tablero de Campeones</h2>
-      <table class="mdc-data-table scoreboard-table">
+      <table class="scoreboard-table">
         <thead>
-          <tr class="mdc-data-table__header-row">
-            <th class="mdc-data-table__header-cell th-jugador">Jugador</th>
-            <th class="mdc-data-table__header-cell th-nivel">Nivel</th>
-            <th class="mdc-data-table__header-cell th-tiempo">Tiempo (s)</th>
-            <th class="mdc-data-table__header-cell th-puntaje">Puntaje</th>
+          <tr>
+            <th>Jugador</th>
+            <th>Nivel</th>
+            <th>Tiempo (s)</th>
+            <th>Puntaje</th>
           </tr>
         </thead>
-        <tbody class="mdc-data-table__content" id="scoreboardBody">
+        <tbody id="scoreboardBody">
           <!-- Se llena dinámicamente -->
         </tbody>
       </table>
     </section>
   </div>
 
-  <!-- Modal para datos de jugador (Nombre, Matrícula) -->
-  <div class="mdc-dialog"
-       id="modalDatosJugador"
-       role="alertdialog"
-       aria-modal="true"
-       aria-labelledby="dialog-title"
-       aria-describedby="dialog-content">
-    <div class="mdc-dialog__container">
-      <div class="mdc-dialog__surface">
-        <h2 class="mdc-dialog__title" id="dialog-title">Datos del jugador</h2>
-        <div class="mdc-dialog__content" id="dialog-content">
-          <!-- Campo: Nombre -->
-          <div class="mdc-text-field mdc-text-field--outlined text-field">
-            <input 
-              type="text" 
-              id="nombreInput" 
-              class="mdc-text-field__input"
-              placeholder=" " 
-              required
-            />
-            <span class="mdc-notched-outline">
-              <span class="mdc-notched-outline__leading"></span>
-              <span class="mdc-notched-outline__notch">
-                <span class="mdc-floating-label">Nombre</span>
-              </span>
-              <span class="mdc-notched-outline__trailing"></span>
-            </span>
-          </div>
-
-          <!-- Campo: Matrícula -->
-          <div class="mdc-text-field mdc-text-field--outlined text-field">
-            <input 
-              type="text" 
-              id="matriculaInput" 
-              class="mdc-text-field__input"
-              placeholder=" "
-              required
-            />
-            <span class="mdc-notched-outline">
-              <span class="mdc-notched-outline__leading"></span>
-              <span class="mdc-notched-outline__notch">
-                <span class="mdc-floating-label">Matrícula</span>
-              </span>
-              <span class="mdc-notched-outline__trailing"></span>
-            </span>
-          </div>
-        </div>
-        <footer class="mdc-dialog__actions">
-          <button
-            type="button"
-            class="mdc-button mdc-dialog__button"
-            data-mdc-dialog-action="close"
-          >
-            <span class="mdc-button__label">Cancelar</span>
-          </button>
-          <button
-            type="button"
-            class="mdc-button mdc-dialog__button mdc-button--filled"
-            data-mdc-dialog-action="accept"
-            id="btnIniciarJuego"
-          >
-            <span class="mdc-button__label">Iniciar</span>
-          </button>
-        </footer>
+  <!-- Modal SOLO para pedir datos (Nombre, Matrícula) -->
+  <div class="modal" id="modalDatosJugador">
+    <div class="modal-content">
+      <h2>Datos del Jugador</h2>
+      <div class="form-group">
+        <label for="nombreInput">Nombre</label>
+        <input type="text" id="nombreInput" required />
+      </div>
+      <div class="form-group">
+        <label for="matriculaInput">Matrícula</label>
+        <input type="text" id="matriculaInput" required />
+      </div>
+      <div class="modal-actions">
+        <button class="button button-outlined" id="btnCancelarDatos">Cancelar</button>
+        <button class="button button-filled" id="btnIniciarJuego">Iniciar</button>
       </div>
     </div>
-    <div class="mdc-dialog__scrim"></div>
   </div>
 
-  <!-- Modal para notificaciones -->
-  <div class="mdc-dialog"
-       id="modalNotificacion"
-       role="alertdialog"
-       aria-modal="true"
-       aria-labelledby="modalNotificacion-title"
-       aria-describedby="modalNotificacion-content">
-    <div class="mdc-dialog__container">
-      <div class="mdc-dialog__surface">
-        <h2 class="mdc-dialog__title" id="modalNotificacion-title"></h2>
-        <div class="mdc-dialog__content" id="modalNotificacion-content">
-          <!-- Texto dinámico -->
-        </div>
-        <footer class="mdc-dialog__actions">
-          <button
-            type="button"
-            class="mdc-button mdc-dialog__button mdc-button--filled"
-            data-mdc-dialog-action="ok"
-            id="btnModalOk"
-          >
-            <span class="mdc-button__label">Continuar</span>
-          </button>
-        </footer>
-      </div>
-    </div>
-    <div class="mdc-dialog__scrim"></div>
+  <!-- Contenedor de notificaciones flotantes (toasts) -->
+  <div class="toast-container" id="toastContainer">
+    <!-- Se añaden dinámicamente -->
   </div>
 
-  <!-- Scripts de Material Design Components -->
-  <script src="https://cdn.jsdelivr.net/npm/material-components-web@latest/dist/material-components-web.min.js"></script>
-
-  <!-- Script de la lógica del juego -->
+  <!-- Script de la lógica -->
   <script src="scripts.js"></script>
 </body>
 </html>

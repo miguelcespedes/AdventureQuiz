@@ -1,49 +1,56 @@
 /*
-  Mejoras de aspecto:
-  - Fondo degradado
-  - Tarjeta con color más vibrante
-  - Columnas ajustadas al 100% de la tabla
-  - Botones con estilo MD3
-  - Responsivo
+  Tema oscuro + Minimal Cards para las opciones
+  - Usamos toasts para feedback
+  - Pregunta centrada
 */
 
-/* Reset básico */
+/* Variables de color */
+:root {
+  --color-bg: #121212;
+  --color-card: #1f1f1f;
+  --color-text: #ffffff;
+  --color-primary: #bb86fc;
+  --color-primary-dark: #9b63f2;
+  --color-secondary: #03dac6;
+  --color-border: #2c2c2c;
+  --color-shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Fondo degradado para hacerlo más llamativo */
 body {
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #D4FC79 0%, #96E6A1 100%);
-  color: #1C1B1F;
-  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-/* Contenedor principal con fondo semitransparente */
+/* Contenedor principal */
 .main-container {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
   min-height: 100vh;
-  border-radius: 16px;
 }
 
-/* Encabezado */
+/* Header */
 .header-section {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 .header-section h1 {
-  font-size: 2.2rem;
-  font-weight: 600;
-  color: #2F3E46; 
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
 }
 
-/* Contenedor de acciones (botones) */
+/* Acciones (botones) */
 .actions-container {
   display: flex;
   justify-content: center;
@@ -51,144 +58,213 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Botón principal (Nuevo Juego, Toggle Tablero) */
-.main-button {
-  border-radius: 20px !important;
-  font-weight: 500;
+/* Botones base */
+.button {
+  font-size: 1rem;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: opacity 0.2s ease;
+}
+.button:hover {
+  opacity: 0.9;
+}
+.button:active {
+  opacity: 0.8;
+}
+.button-filled {
+  background-color: var(--color-primary);
+}
+.button-outlined {
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
 }
 
 /* Sección de pregunta */
-.question-section {
-  margin-bottom: 2rem;
+.question-section.hidden {
+  display: none;
 }
-
-/* Card de la pregunta */
 .question-card {
-  border-radius: 12px !important;
+  background-color: var(--color-card);
   padding: 1.5rem;
-  background-color: #FFFFFF; /* Elevation level 1 */
-  border: 1px solid #CBD4C2;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+  box-shadow: 0 3px 8px var(--color-shadow);
+  margin-bottom: 2rem;
+  text-align: center;
 }
-
-/* Texto de la pregunta */
 .question-text {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
   font-weight: 500;
-  margin-bottom: 1rem;
-  color: #2F3E46;
 }
 
-/* Contenedor de respuestas */
-.answers-container {
+/* Respuestas en fila de tarjetas */
+.answers-row {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  gap: 1rem;
 }
-
-/* Cada respuesta como un botón MD minimal */
-.answer-button {
-  background-color: #DEF7E5;
-  color: #1C1B1F;
-  border: none;
+/* Cada opción es una 'card' minimalista */
+.answer-card {
+  background-color: #2d2d2d;
+  border: 2px solid var(--color-border);
   border-radius: 8px;
-  padding: 0.6rem 1.2rem;
+  width: 200px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  min-width: 120px;
-  text-align: center;
-  font-size: 0.95rem;
+  transition: transform 0.2s ease;
+  color: var(--color-text);
+  font-size: 1rem;
   font-weight: 500;
+  padding: 0.5rem;
+  text-align: center;
+}
+.answer-card:hover {
+  transform: scale(1.05);
+  background-color: var(--color-primary-dark);
 }
 
-.answer-button:hover {
-  background-color: #BEE3CD; /* Hover */
-}
-
-/* Tablero de campeones */
+/* Scoreboard */
 .scoreboard-section {
+  margin-top: 2rem;
   text-align: center;
-  margin-top: 3rem;
 }
-
-/* Tabla con 100% de ancho y columnas flexibles */
-.scoreboard-table {
-  margin: 0 auto;
-  width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #CBD4C2; 
-  background-color: #FFFFFF;
-  table-layout: fixed;
-}
-
-.scoreboard-table th, .scoreboard-table td {
-  /* Ocupamos todo el ancho uniformemente */
-  width: 25%;
-}
-
-.mdc-data-table__header-cell,
-.mdc-data-table__cell {
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: center;
-  color: #2F3E46;
-  border-bottom: 1px solid #CBD4C2;
-  padding: 0.75rem;
-}
-
-/* Diálogos y campos de texto */
-.mdc-dialog__surface {
-  border-radius: 12px !important;
-  background-color: #FFFFFF;
-}
-
-.mdc-dialog__title {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #2F3E46;
-}
-
-/* Campos de texto con floating label */
-.text-field {
+.scoreboard-section h2 {
+  font-size: 1.5rem;
   margin-bottom: 1rem;
+  color: var(--color-secondary);
+}
+.scoreboard-table {
   width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+.scoreboard-table th,
+.scoreboard-table td {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  text-align: center;
+  font-size: 1rem;
+}
+.scoreboard-table th {
+  background-color: #2a2a2a;
+  color: var(--color-secondary);
 }
 
-/* Botones en la ventana modal */
-.mdc-dialog__button {
-  border-radius: 16px !important;
+/* Modal para datos */
+.modal {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
 }
-.mdc-dialog__button.mdc-button--filled {
-  background-color: #2F3E46 !important; /* color principal */
-  color: #FFFFFF !important;
+.modal.active {
+  display: flex;
+}
+.modal-content {
+  background-color: var(--color-card);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  max-width: 400px;
+  width: 90%;
+  margin: auto;
+  box-shadow: 0 4px 10px var(--color-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.form-group label {
+  font-size: 1rem;
+  color: var(--color-primary);
+}
+.form-group input {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--color-border);
+  background-color: #2b2b2b;
+  color: var(--color-text);
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
 }
 
-/* Botón "Continuar" en notificaciones */
-#btnModalOk.mdc-button--filled {
-  background-color: #386641 !important; /* un verde */
-  color: #FFFFFF !important;
+/* Toast Container */
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 9999;
+}
+.toast {
+  background-color: #2d2d2d;
+  color: var(--color-text);
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  opacity: 0;
+  animation: fadeInOut 3s forwards; /* se desvanece a los 3s */
+}
+.toast.success {
+  border-color: var(--color-secondary);
+}
+.toast.error {
+  border-color: #cf6679;
+}
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }
 
-/* Responsividad */
+/* Responsivo */
 @media (max-width: 600px) {
   .main-container {
     padding: 1rem;
   }
-  .question-card {
+  .question-text {
+    font-size: 1.2rem;
+  }
+  .answer-card {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
     padding: 1rem;
   }
-  .question-text {
-    font-size: 1.1rem;
-  }
-  .actions-container {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .scoreboard-table th, 
-  .scoreboard-table td {
-    font-size: 0.8rem;
-    width: auto;
+  .scoreboard-table th, .scoreboard-table td {
+    font-size: 0.85rem;
   }
 }
