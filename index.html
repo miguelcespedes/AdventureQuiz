@@ -2,8 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz Aventura</title>
-  <!-- Nuestro archivo de estilos -->
+  <title>Quiz Aventura - Dark Mode</title>
+
+  <!-- Viewport meta para mejorar la experiencia responsive 
+       y limitar (o desactivar) el zoom en móviles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+  <!-- Nuestros estilos en modo oscuro (styles.css) -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,7 +16,7 @@
   <div class="main-container">
     <!-- Encabezado -->
     <header class="header-section">
-      <h1>Quiz Aventura</h1>
+      <h1>Quiz Aventura (Dark Minimal)</h1>
     </header>
 
     <!-- Acciones principales -->
@@ -23,7 +28,7 @@
     <!-- Sección de Pregunta (invisible al inicio) -->
     <section id="questionSection" class="question-section hidden">
       <div class="question-card">
-        <!-- El texto "Pregunta X de Y: ..." se generará en scripts.js -->
+        <!-- Aquí se mostrará "Pregunta X de Y" -->
         <h2 class="question-text" id="questionText"></h2>
         <!-- Contenedor de las tarjetas de respuesta -->
         <div class="answers-row" id="answersContainer"></div>
@@ -44,7 +49,7 @@
           </tr>
         </thead>
         <tbody id="scoreboardBody">
-          <!-- Se llena dinámicamente en scripts.js -->
+          <!-- Se llena dinámicamente desde scripts.js -->
         </tbody>
       </table>
     </section>
