@@ -14,7 +14,6 @@
   --content-width-mobile: 95%;
   --content-width-tablet: 90%;
   --content-width-desktop: 85%;
-  --content-top-offset: 70px;
   --column-gap: 20px;
   --steps-width: 400px;
 
@@ -22,11 +21,31 @@
   --logo-width-mobile: 350px;
   --logo-width-tablet: 500px;
   --logo-width-desktop: 900px;
-  --logo-margin-top: 20px;
+  --logo-top-mobile: 30px;  /* Margen superior del logo en móvil */
+  --logo-top-tablet: 30px;  /* Margen superior del logo en tablet */
+  --logo-top-desktop: 40px; /* Margen superior del logo en desktop */
 
-  /* Badge Neutral */
-  --badge-neutral-bg: #6c757d;
-  --badge-neutral-color: #fff;
+  /* Contenido */
+  --content-width-mobile: 95%;
+  --content-width-tablet: 90%;
+  --content-width-desktop: 85%;
+  --content-margin-top-mobile: 20px;
+  --content-margin-top-tablet: 20px;
+  --content-margin-top-desktop: 20px;
+  --content-height-mobile: 400px;
+  --content-height-tablet: 500px;
+  --content-height-desktop: auto;
+
+  /* Panel */
+  --panel-width-mobile: 100%;
+  --panel-width-tablet: 90%;
+  --panel-width-desktop: 85%;
+  --panel-margin-top-mobile: 100px;
+  --panel-margin-top-tablet: 50px;
+  --panel-margin-top-desktop: 70px;
+  --panel-height-mobile: 700px;
+  --panel-height-tablet: 500px;
+  --panel-height-desktop: 550px;
 }
 
 /* Estilos Globales */
@@ -70,23 +89,24 @@ body {
 /* Logo */
 .logo {
   position: fixed;
-  top: 30px;  /* Ajusta este valor para asegurar que el logo sea visible */
-  margin-top: 0;  /* Asegura que no esté tapado en pantallas pequeñas */
+  top: var(--logo-top-mobile);  /* Margen superior según dispositivo */
   left: 50%;
   transform: translateX(-50%);
-  width: var(--logo-width-mobile);
+  width: var(--logo-width-mobile);  /* Ancho según dispositivo */
   height: auto;
   z-index: 2;  /* Asegura que el logo esté encima de otros elementos */
 }
 
 @media (min-width: 768px) {
   .logo {
+    top: var(--logo-top-tablet);
     width: var(--logo-width-tablet);
   }
 }
 
 @media (min-width: 1024px) {
   .logo {
+    top: var(--logo-top-desktop);
     width: var(--logo-width-desktop);
   }
 }
@@ -94,40 +114,29 @@ body {
 /* Contenido */
 .content {
   padding: 20px;
-  width: var(--content-width-mobile);
-  margin: -20vh auto 0;
+  width: var(--content-width-mobile);  /* Ancho según dispositivo */
+  margin: var(--content-margin-top-mobile) auto 0;  /* Margen superior según dispositivo */
   display: flex;
   flex-direction: column;
   gap: var(--column-gap);
   position: relative;
   z-index: 2;
-  min-height: auto;  /* Altura por defecto para móviles */
+  min-height: var(--content-height-mobile);  /* Altura mínima según dispositivo */
 }
 
 @media (min-width: 768px) {
   .content {
     width: var(--content-width-tablet);
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-top: -10vh; /* Ajuste el margen superior en tablets */
-    max-height: 400px;  /* Altura para tablets */
+    margin-top: var(--content-margin-top-tablet);
+    min-height: var(--content-height-tablet);
   }
 }
 
 @media (min-width: 1024px) {
   .content {
     width: var(--content-width-desktop);
-    margin-top: -15vh; /* Ajuste el margen superior para laptops */
-    min-height: 600px;  /* Altura para laptops */
-  }
-}
-
-@media (min-width: 1920px) {
-  .content {
-    width: var(--content-width-desktop);
-    margin-top: -20vh; /* Ajuste el margen superior para pantallas grandes */
-    min-height: 700px;  /* Altura para pantallas grandes */
+    margin-top: var(--content-margin-top-desktop);
+    min-height: var(--content-height-desktop);
   }
 }
 
@@ -138,38 +147,41 @@ body {
   box-shadow: var(--panel-shadow);
   padding: 20px;
   border: solid 1px #192a88;
-  height: 800px;
+  width: var(--panel-width-mobile);  /* Ancho según dispositivo */
+  height: var(--panel-height-mobile);  /* Altura según dispositivo */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  margin-top: 0;
+  margin-top: var(--panel-margin-top-mobile);  /* Margen superior según dispositivo */
 }
 
 @media (max-width: 767.98px) {
   .wizard-panel {
-    margin-top: 200px; /* Agrega un margen superior más grande para dispositivos móviles */
-    height: 700px;
+    margin-top: var(--panel-margin-top-mobile);
+    height: var(--panel-height-mobile);
   }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .wizard-panel {
-    margin-top: 30px; /* Agrega un margen superior adecuado para tablets */
-    height: 700px;
+    margin-top: var(--panel-margin-top-tablet);
+    height: var(--panel-height-tablet);
   }
 }
 
 @media (min-width: 1024px) {
   .wizard-panel {
-    margin-top: 40px; /* Ajusta un margen superior adecuado para laptops */
+    margin-top: var(--panel-margin-top-desktop);
+    height: var(--panel-height-desktop);
   }
 }
 
 @media (min-width: 1920px) {
   .wizard-panel {
-    margin-top: 180px; /* Ajusta el margen superior para pantallas grandes */
+    margin-top: var(--panel-margin-top-desktop);
+    height: var(--panel-height-desktop);
   }
 }
 
