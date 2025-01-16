@@ -1,113 +1,79 @@
 const quizData = [
   {
     id: "categoria01",
-    titulo: "Ciencia",
+    titulo: "Review Request",
     preguntas: [
       {
         id: 1,
-        pregunta: "¿Cuál es la velocidad de la luz?",
+        pregunta: "¿En qué consiste la iniciativa?",
         opciones: [
-          { id: "A", texto: "300,000 km/s" },
-          { id: "B", texto: "150,000 km/s" },
-          { id: "C", texto: "450,000 km/s" }
+          { id: "A", texto: "Es una automatización en JIRA que facilita la asignación de Revisiones de APIs" },
+          { id: "B", texto: "Es una Inventario de Ordenes de Atención" },
+          { id: "C", texto: "Es un sistema para inventarias APIs" }
         ],
         correcta: "A"
       },
       {
         id: 2,
-        pregunta: "¿Quién desarrolló la teoría de la relatividad?",
+        pregunta: "¿Cual es el principal beneficio?",
         opciones: [
-          { id: "A", texto: "Isaac Newton" },
-          { id: "B", texto: "Albert Einstein" },
-          { id: "C", texto: "Galileo Galilei" }
+          { id: "A", texto: "Ahorro en numero de horas del personal de APIs" },
+          { id: "B", texto: "Mejora del tiempo de Ejecución del Pipeline" },
+          { id: "C", texto: "Ahorro de dinero en costo de licencias" }
         ],
         correcta: "B"
-      },
-      {
-        id: 3,
-        pregunta: "¿Qué partícula tiene carga negativa?",
-        opciones: [
-          { id: "A", texto: "Protón" },
-          { id: "B", texto: "Neutrón" },
-          { id: "C", texto: "Electrón" }
-        ],
-        correcta: "C"
-      },
-      {
-        id: 4,
-        pregunta: "¿Cuál es el elemento químico con el símbolo O?",
-        opciones: [
-          { id: "A", texto: "Oro" },
-          { id: "B", texto: "Oxígeno" },
-          { id: "C", texto: "Osmio" }
-        ],
-        correcta: "B"
-      },
-      {
-        id: 5,
-        pregunta: "¿Qué órgano es responsable de bombear sangre?",
-        opciones: [
-          { id: "A", texto: "Pulmones" },
-          { id: "B", texto: "Hígado" },
-          { id: "C", texto: "Corazón" }
-        ],
-        correcta: "C"
       }
     ]
   },
   {
     id: "categoria02",
-    titulo: "Historia",
+    titulo: "Governance Framework Design",
     preguntas: [
       {
         id: 1,
-        pregunta: "¿En qué año comenzó la Segunda Guerra Mundial?",
+        pregunta: "¿Cual es el principal beneficio?",
         opciones: [
-          { id: "A", texto: "1939" },
-          { id: "B", texto: "1914" },
-          { id: "C", texto: "1945" }
+          { id: "A", texto: "Eliminación del costo de licencias" },
+          { id: "B", texto: "Eliminación de SwaggerHub" },
+          { id: "C", texto: "Creación de trabajo manual" }
         ],
         correcta: "A"
       },
       {
         id: 2,
-        pregunta: "¿Quién fue el primer presidente de los Estados Unidos?",
+        pregunta: "La herramienta permite integrar con:",
         opciones: [
-          { id: "A", texto: "Abraham Lincoln" },
-          { id: "B", texto: "George Washington" },
-          { id: "C", texto: "Thomas Jefferson" }
+          { id: "A", texto: "Azure APIM" },
+          { id: "B", texto: "Github y Sprectral" },
+          { id: "C", texto: "Jenkins y Portal de APIs" }
         ],
         correcta: "B"
-      },
+      }
+    ]
+  },
+  {
+    id: "categoria03",
+    titulo: "Zero Trust API Validation",
+    preguntas: [
       {
-        id: 3,
-        pregunta: "¿Qué civilización antigua construyó las pirámides de Egipto?",
+        id: 1,
+        pregunta: "¿Cual es el principal beneficio?",
         opciones: [
-          { id: "A", texto: "Los Mayas" },
-          { id: "B", texto: "Los Aztecas" },
-          { id: "C", texto: "Los Egipcios" }
+          { id: "A", texto: "Ahorra tiempo en el login" },
+          { id: "B", texto: "Mejora la experiencia de usuario" },
+          { id: "C", texto: "Incorpora un mecanismo que garantiza que los clientes solo puede acceder a sus propios datos" }
         ],
         correcta: "C"
       },
       {
-        id: 4,
-        pregunta: "¿En qué país se originó la Revolución Industrial?",
+        id: 2,
+        pregunta: "¿Qué es Zero Trust?",
         opciones: [
-          { id: "A", texto: "Alemania" },
-          { id: "B", texto: "Estados Unidos" },
-          { id: "C", texto: "Reino Unido" }
+          { id: "A", texto: "Un efoque de seguridad" },
+          { id: "B", texto: "Una arquitectura de software" },
+          { id: "C", texto: "Un lineamiento del BCP" }
         ],
-        correcta: "C"
-      },
-      {
-        id: 5,
-        pregunta: "¿Quién fue conocido como el 'Rey León' de la Revolución Francesa?",
-        opciones: [
-          { id: "A", texto: "Napoleón Bonaparte" },
-          { id: "B", texto: "Maximilien Robespierre" },
-          { id: "C", texto: "Jean-Paul Marat" }
-        ],
-        correcta: "B"
+        correcta: "A"
       }
     ]
   }
