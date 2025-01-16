@@ -1,89 +1,89 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
-  <title>Quiz Aventura</title>
-
-  <!-- Viewport meta para mejorar la experiencia responsive
-       y (opcionalmente) desactivar el zoom en dispositivos móviles -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
-  <!-- Nuestros estilos en modo oscuro (styles.css) -->
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wizard Completo</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-
-  <div class="main-container">
-    <!-- Encabezado -->
-    <header class="header-section">
-      <h1>Quiz Aventura</h1>
-    </header>
-
-    <!-- Acciones principales -->
-    <div class="actions-container">
-      <button class="button button-filled" id="btnNuevoJuego">Nuevo Juego</button>
-      <button class="button button-outlined" id="btnToggleScoreboard">Ocultar Tablero</button>
-    </div>
-
-    <!-- Sección de Pregunta (invisible al inicio) -->
-    <section id="questionSection" class="question-section hidden">
-      <div class="question-card">
-        <!-- Aquí se mostrará "Pregunta X de Y" -->
-        <h2 class="question-text" id="questionText"></h2>
-        <!-- Contenedor de las tarjetas de respuesta -->
-        <div class="answers-row" id="answersContainer"></div>
-      </div>
-    </section>
-
-    <!-- Tablero de Campeones -->
-    <section class="scoreboard-section" id="scoreboardSection">
-      <h2>Tablero de Campeones</h2>
-      <table class="scoreboard-table">
-        <thead>
-          <tr>
-            <th>Jugador</th>
-            <th>Intentos</th>
-            <!-- Estas columnas se ocultarán en móvil -->
-            <th class="mobile-hide">Mejor Nivel</th>
-            <th class="mobile-hide">Mejor Tiempo (s)</th>
-            <th>Mejor Puntaje</th>
-          </tr>
-        </thead>
-        <tbody id="scoreboardBody">
-          <!-- Se llena dinámicamente en scripts.js -->
-        </tbody>
-      </table>
-    </section>
+  <!-- Header con SVG y Logo -->
+  <div class="svg-header">
+    <img src="./images/logo-ubag.svg" alt="Logo" class="logo">
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,0 H100 V80 C75 100, 25 100, 0,80 Z" />
+    </svg>
   </div>
 
-  <!-- Modal SOLO para pedir datos de jugador (Nombre, Matrícula) -->
-  <div class="modal" id="modalDatosJugador">
-    <div class="modal-content">
-      <h2>Datos del Jugador</h2>
+  <!-- Contenido del Wizard -->
+  <div class="content">
+    <div class="column1">
+      <h1 class="wizard-title">Demuestra tus conocimientos</h1>
+      <div class="wizard-panel">
+        <div class="steps">
+          <div class="circle active">1</div>
+          <div class="circle">2</div>
+          <div class="circle">3</div>
+          <div class="progress-bar">
+            <div class="indicator"></div>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label for="nombreInput">Nombre</label>
-        <input type="text" id="nombreInput" required />
-      </div>
+        <!-- Paso 1 -->
+        <div class="step-content active" id="step-1">
+          <div class="form-group mb-3">
+            <label for="matricula" class="form-label">Matrícula</label>
+            <input type="text" id="matricula" placeholder="Ingresa tu matrícula" class="form-control">
+          </div>
+          <div class="form-group mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" id="name" placeholder="Ingresa tu nombre" class="form-control">
+          </div>
+          <div class="form-group mb-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select id="categoria" class="form-select">
+              <option value="" selected>Selecciona una categoría</option>
+              <!-- Opciones cargadas dinámicamente -->
+            </select>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label for="matriculaInput">Matrícula</label>
-        <input type="text" id="matriculaInput" required />
-      </div>
+        <!-- Paso 2 -->
+        <div class="step-content" id="step-2">
+          <div id="timer" class="timer">Tiempo: 00:00</div>
+          <h3 class="mb-3" id="question-text"></h3>
+          <div class="question-subtitle" id="question-subtitle"></div>
+          <div class="form-group">
+            <div class="row" id="options-container"></div>
+          </div>
+        </div>
 
-      <div class="modal-actions">
-        <button class="button button-outlined" id="btnCancelarDatos">Cancelar</button>
-        <button class="button button-filled" id="btnIniciarJuego">Iniciar</button>
+        <!-- Paso 3 -->
+        <div class="step-content" id="step-3">
+          <h3 class="mb-4">Resultados por Categoría</h3>
+          <div class="tabs-container">
+            <ul class="nav nav-tabs" id="categoryTabs" role="tablist"></ul>
+            <div class="tab-content" id="categoryTabContent"></div>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="navigation-buttons">
+          <button class="next btn btn-primary">Siguiente</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Contenedor de notificaciones flotantes (toasts) -->
-  <div class="toast-container" id="toastContainer"></div>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- 1) Se cargan primero las preguntas (quizz.js) -->
-  <script src="quizz.js"></script>
-  <!-- 2) Luego la lógica principal (scripts.js) -->
-  <script src="scripts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="quizData.js"></script>
+  <script src="main.js"></script>
 </body>
+
 </html>
