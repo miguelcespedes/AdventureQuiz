@@ -19,7 +19,7 @@
   --steps-width: 400px;
 
   /* Logo */
-  --logo-width-mobile: 500px;
+  --logo-width-mobile: 350px;
   --logo-width-tablet: 500px;
   --logo-width-desktop: 900px;
   --logo-margin-top: 20px;
@@ -34,7 +34,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: flexo, sans-serif;
-  background-color: #f8f9fa;
   position: relative;
   min-height: 100vh;
   display: flex;
@@ -71,12 +70,13 @@ body {
 /* Logo */
 .logo {
   position: fixed;
-  top: 0;
-  margin-top: 30px;
+  top: 30px;  /* Ajusta este valor para asegurar que el logo sea visible */
+  margin-top: 0;  /* Asegura que no esté tapado en pantallas pequeñas */
   left: 50%;
   transform: translateX(-50%);
   width: var(--logo-width-mobile);
   height: auto;
+  z-index: 2;  /* Asegura que el logo esté encima de otros elementos */
 }
 
 @media (min-width: 768px) {
@@ -101,6 +101,7 @@ body {
   gap: var(--column-gap);
   position: relative;
   z-index: 2;
+  min-height: auto;  /* Altura por defecto para móviles */
 }
 
 @media (min-width: 768px) {
@@ -109,12 +110,66 @@ body {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
+    margin-top: -10vh; /* Ajuste el margen superior en tablets */
+    max-height: 400px;  /* Altura para tablets */
   }
 }
 
 @media (min-width: 1024px) {
   .content {
     width: var(--content-width-desktop);
+    margin-top: -15vh; /* Ajuste el margen superior para laptops */
+    min-height: 600px;  /* Altura para laptops */
+  }
+}
+
+@media (min-width: 1920px) {
+  .content {
+    width: var(--content-width-desktop);
+    margin-top: -20vh; /* Ajuste el margen superior para pantallas grandes */
+    min-height: 700px;  /* Altura para pantallas grandes */
+  }
+}
+
+/* Wizard Panel */
+.wizard-panel {
+  background-color: var(--panel-bg-color);
+  border-radius: var(--panel-border-radius);
+  box-shadow: var(--panel-shadow);
+  padding: 20px;
+  border: solid 1px #192a88;
+  height: 800px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  margin-top: 0;
+}
+
+@media (max-width: 767.98px) {
+  .wizard-panel {
+    margin-top: 200px; /* Agrega un margen superior más grande para dispositivos móviles */
+    height: 700px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .wizard-panel {
+    margin-top: 30px; /* Agrega un margen superior adecuado para tablets */
+    height: 700px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wizard-panel {
+    margin-top: 40px; /* Ajusta un margen superior adecuado para laptops */
+  }
+}
+
+@media (min-width: 1920px) {
+  .wizard-panel {
+    margin-top: 180px; /* Ajusta el margen superior para pantallas grandes */
   }
 }
 
@@ -144,25 +199,11 @@ body {
   font-size: 1.2rem;
 }
 
-/* Panel Wizard */
-.wizard-panel {
-  background-color: var(--panel-bg-color);
-  border-radius: var(--panel-border-radius);
-  box-shadow: var(--panel-shadow);
-  padding: 20px;
-  border: solid 1px #192a88;
-  min-height: 700px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-}
-
+/* Steps */
 .wizard-title {
   font-size: 2rem;
-  color: var(--title-color);
-  margin-bottom: 20px;
+  color: var(--svg-fill-color);
+  margin-bottom: 30px;
   text-align: left;
   font-weight: regular;
 }
@@ -170,7 +211,7 @@ body {
 .steps {
   display: flex;
   width: 100%;
-  padding: 20px 0px;
+  padding: 20px 0;
   max-width: var(--steps-width);
   margin: 0 auto 20px;
   align-items: center;
@@ -265,11 +306,6 @@ body {
   color: var(--badge-neutral-color);
 }
 
-/* Ocultar Elementos */
-.hidden {
-  display: none;
-}
-
 /* Estilos para las Cards del Paso 2 */
 .option-card {
   border: 2px solid #dee2e6;
@@ -309,23 +345,21 @@ body {
 }
 
 /* Toasts */
-/* Centrar el Contenedor de Toasts y Hacerlo Flotante */
 #toast-container {
   position: fixed;
-  top: 10vh; /* Ajusta la posición vertical según tus necesidades */
+  top: 10vh;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1055; /* Asegúrate de que esté por encima de otros elementos */
-  pointer-events: none; /* Evita que afecte el flujo de clics en otros elementos */
+  z-index: 1055;
+  pointer-events: none;
 }
 
-/* Estilos para los Toasts */
 .toast {
   min-width: 300px;
   max-width: 500px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  pointer-events: auto; /* Permite cerrar el toast si el usuario hace clic en el botón de cerrar */
+  pointer-events: auto;
 }
 
 .toast .toast-body {
@@ -366,6 +400,6 @@ body {
 }
 
 .table-responsive {
-  max-height: 400px; /* Ajusta este valor según el tamaño que desees */
-  overflow-y: auto;  /* Agrega la barra de desplazamiento vertical */
+  max-height: 400px;
+  overflow-y: auto;
 }
